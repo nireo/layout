@@ -1,93 +1,45 @@
-# layout documentation
+# Keyboard Layout
 
-### Base Layer (_DEF)
+## Default Layer (_DEF)
+
 ```
-┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
-│  Q  │  W  │  E  │  R  │  T  │       │  Y  │  U  │  I  │  O  │  P  │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│  A  │  S  │  D  │  F  │  G  │       │  H  │  J  │  K  │  L  │  ;  │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│  Z  │  X  │  C  │  V  │  B  │       │  N  │  M  │  ,  │  .  │  /  │
-└─────┴─────┴─────┼─────┼─────┤       ├─────┼─────┼─────┴─────┴─────┘
-                  │ ESC │ SPC │       │SHIFT│ RIV │
-                  ├─────┼─────┤       ├─────┼─────┤
-                  │ NAV │ SYM │       │     │     │
-                  └─────┴─────┘       └─────┴─────┘
+Q   | W   | E   | R   | T   |   | Y   | U   | I   | O   | P
+A   | S   | D   | F   | G   |   | H   | J   | K   | L   | ;
+Z   | X   | C   | V   | B   |   | N   | M   | ,   | .   | /
+            ESC | SPC | NAV |   | SYM | LSFT| RIV
 ```
 
+## Symbol Layer (_SYM)
 
-### Symbol Layer (_SYM)
 ```
-┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
-│  1  │  2  │  3  │  4  │  5  │       │  6  │  7  │  8  │  9  │  0  │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│  ;  │  `  │  `  │  "  │  -  │       │  +  │SHIFT│CTRL │ ALT │ CMD │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│  \  │ ||  │  {  │  }  │  _  │       │  =  │  [  │  ]  │  |  │  \  │
-└─────┴─────┴─────┼─────┼─────┤       ├─────┼─────┼─────┴─────┴─────┘
-                  │ --- │ --- │       │ --- │ --- │
-                  ├─────┼─────┤       ├─────┼─────┤
-                  │ --- │ *** │       │     │     │
-                  └─────┴─────┘       └─────┴─────┘
+!   | @   | #   | $   | %   |   | ^   | &   | *   | (   | )
+-   | +   | =   | _   | [   |   | ]   | {   | }   | |   | 
+~   | `   | <   | >   | ?   |   | /   | '   | "   | ;   | :
+            ___ | ___ | ___ |   | ___ | ___ | ___
 ```
 
-### Navigation Layer (_NAV)
+## Navigation Layer (_NAV)
+
 ```
-┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
-│S-TAB│S-WIN│TAB-L│TAB-R│ ESC │       │ ESC │HOME │ END │BSPC │ DEL │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│ CMD │ ALT │CTRL │SHIFT│ENTER│       │ENTER│ ←   │ ↓   │ ↑   │ →   │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│SPC-L│SPC-R│UNDO │REDO │ TAB │       │ TAB │PGUP │PGDN │ '   │ NUM │
-└─────┴─────┴─────┼─────┼─────┤       ├─────┼─────┼─────┴─────┴─────┘
-                  │ --- │ --- │       │ --- │ --- │
-                  ├─────┼─────┤       ├─────┼─────┤
-                  │ *** │ --- │       │     │     │
-                  └─────┴─────┘       └─────┴─────┘
+STAB| SWIN| TABL| TABR| VIMD|   | VIMU| HOME| END | BSPC| DEL
+CMD | ALT | CTRL| SHFT| ENT |   | ENT | LEFT| DOWN| UP  | RGHT
+SPCL| SPCR| UNDO| REDO| TAB |   | TAB | PGUP| PGDN| '   | NUM
+            ___ | ___ | ___ |   | ___ | ___ | ___
 ```
 
-### Window management using tiling window manager
+
+## Window manager Layer (_RIV)
 ```
-┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
-│ TAG1│ TAG2│ TAG3│ TAG4│ TAG5│       │ TAG6│ TAG7│ TAG8│ TAG9│CLOSE│
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│LUNCH│LAST │PREV │NEXT │FLOAT│       │FULL │ ←   │ ↓   │ ↑   │ →   │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│TERM │ --- │ --- │ --- │DEC-R│       │INC-R│ --- │ --- │ --- │ --- │
-└─────┴─────┴─────┼─────┼─────┤       ├─────┼─────┼─────┴─────┴─────┘
-                  │ --- │ --- │       │ --- │ *** │
-                  ├─────┼─────┤       ├─────┼─────┤
-                  │ --- │ --- │       │     │     │
-                  └─────┴─────┘       └─────┴─────┘
+TAG1| TAG2| TAG3| TAG4| TAG5|   | TAG6| TAG7| TAG8| TAG9| CLOS
+LAUN| LAST| PREV| NEXT| FLOT|   | FULL| LEFT| DOWN| UP  | RGHT
+TERM| ___ | ___ | ___ | RDEC|   | RINC| ___ | ___ | ___ | ___
+            ___ | ___ | ___ |   | ___ | ___ | ___
 ```
 
-### Number/Function Layer (_NUM)
+## Number Layer (_NUM)
 ```
-┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
-│ F1  │ F2  │ F3  │ F4  │ F5  │       │ F6  │ F7  │ F8  │ F9  │ F10 │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│ CMD │ ALT │CTRL │SHIFT│ F11 │       │ F12 │SHIFT│CTRL │ ALT │ CMD │
-├─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┤
-│ P1  │ P2  │ P3  │ P4  │ P5  │       │ P6  │ P7  │ P8  │ P9  │ P0  │
-└─────┴─────┴─────┼─────┼─────┤       ├─────┼─────┼─────┴─────┴─────┘
-                  │ --- │ --- │       │ --- │ --- │
-                  ├─────┼─────┤       ├─────┼─────┤
-                  │ --- │ --- │       │     │     │
-                  └─────┴─────┘       └─────┴─────┘
+1   | 2   | 3   | 4   | 5   |   | 6   | 7   | 8   | 9   | 0
+CMD | ALT | CTRL| SHFT| F11 |   | F12 | SHFT| CTRL| ALT | CMD
+F1  | F2  | F3  | F4  | F5  |   | F6  | F7  | F8  | F9  | F10
+            ___ | ___ | ___ |   | ___ | ___ | ___
 ```
-
-### Key Bindings Reference tiling window manager
-
-| Keyboard Shortcut | River Command | Function |
-|------------------|---------------|----------|
-| Super+1-9 | `set-focused-tags` | Switch to workspace/tag |
-| Super+J | `focus-view next` | Focus next window |
-| Super+K | `focus-view previous` | Focus previous window |
-| Super+H | `main-ratio -0.05` | Decrease main area |
-| Super+L | `main-ratio +0.05` | Increase main area |
-| Super+Q | `close` | Close focused window |
-| Super+D | `bemenu-run` | Application launcher |
-| Super+Enter | `spawn foot` | Open terminal |
-| Super+Space | `toggle-float` | Toggle floating mode |
-| Super+F | `toggle-fullscreen` | Toggle fullscreen |
-| Super+Tab | `focus-view previous` | Focus last window |
