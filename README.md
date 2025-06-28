@@ -1,5 +1,7 @@
 # Keyboard Layout
 
+This keyboard layout uses oneshot mods meaning that there are no delays. Pressing a one shot mod key queues up that key until a non-modifier key is pressed. This layout is mainly focused on programming and using a tiling window manager.
+
 ## Default Layer (_DEF)
 
 ```
@@ -12,27 +14,27 @@ Z   | X   | C   | V   | B   |   | N   | M   | ,   | .   | /
 ## Symbol Layer (_SYM)
 
 ```
-!   | @   | #   | $   | %   |   | ^   | &   | *   | (   | )
--   | +   | =   | _   | [   |   | ]   | {   | }   | |   | 
-~   | `   | <   | >   | ?   |   | /   | '   | "   | ;   | :
+!   | :   | #   | $   | %   |   | ^   | &   | *   | |   | \
+-   | +   | =   | _   | [   |   | ]   | {   | }   | (   | )
+~   | `   | <   | >   | ?   |   | /   | "   | '   | ;   | @
             ___ | ___ | ___ |   | ___ | ___ | ___
 ```
 
 ## Navigation Layer (_NAV)
 
 ```
-STAB| SWIN| TABL| TABR| VIMD|   | VIMU| HOME| END | BSPC| DEL
-CMD | ALT | CTRL| SHFT| ENT |   | ENT | LEFT| DOWN| UP  | RGHT
-SPCL| SPCR| UNDO| REDO| TAB |   | TAB | PGUP| PGDN| '   | NUM
+STAB| SWIN| TABL| TABR| VIMD|   | VIMU| HOME| UP  | BSPC | DEL
+CMD | ALT | CTRL| SHFT| ENT |   | ENT | LEFT| DOWN| RGHT | END
+SPCL| SPCR| UNDO| REDO| TAB |   | TAB | PGUP| PGDN| '    | NUM
             ___ | ___ | ___ |   | ___ | ___ | ___
 ```
 
 
-## Window manager Layer (_RIV)
+## Window and extra manager Layer (_RIV)
 ```
 TAG1| TAG2| TAG3| TAG4| TAG5|   | TAG6| TAG7| TAG8| TAG9| CLOS
 LAUN| LAST| PREV| NEXT| FLOT|   | FULL| LEFT| DOWN| UP  | RGHT
-TERM| ___ | ___ | ___ | RDEC|   | RINC| ___ | ___ | ___ | ___
+TERM| ___ | C+C | C+V | RDEC|   | RINC| C+R | C+T | C+F | ___
             ___ | ___ | ___ |   | ___ | ___ | ___
 ```
 

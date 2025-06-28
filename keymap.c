@@ -42,23 +42,28 @@
 #define RIV_TAG9 G(KC_9)       // Super+9: tag 9
 #define VIM_U C(KC_U)          // Ctrl+U: page up in vim
 #define VIM_D C(KC_D)          // Ctrl+D: page down in vim
+#define CTRL_V C(KC_V)
+#define CTRL_C C(KC_C)
+#define CTRL_R C(KC_R)
+#define CTRL_T C(KC_T)
+#define CTRL_F C(KC_F)
 
 enum layers {
-    _DEF,
-    _SYM,
-    _NAV,
-    _RIV, // New River window management layer
-    _NUM,
+  _DEF,
+  _SYM,
+  _NAV,
+  _RIV, // New River window management layer
+  _NUM,
 };
 
 enum keycodes {
-    // Custom oneshot mod implementation with no timers.
-    OS_SHFT = SAFE_RANGE,
-    OS_CTRL,
-    OS_ALT,
-    OS_CMD,
-    SW_WIN, // Switch to next window (alt-tab) - kept for compatibility
-    SW_TAB, // Switch to next browser tab (ctrl-tab)
+  // Custom oneshot mod implementation with no timers.
+  OS_SHFT = SAFE_RANGE,
+  OS_CTRL,
+  OS_ALT,
+  OS_CMD,
+  SW_WIN, // Switch to next window (alt-tab) - kept for compatibility
+  SW_TAB, // Switch to next browser tab (ctrl-tab)
 };
 
 // clang-format off
@@ -71,9 +76,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_SYM] = LAYOUT_split_3x5_3(
-        KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-        KC_MINS, KC_PLUS, KC_EQL,  KC_UNDS, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, KC_PIPE, KC_BSLS,
-        KC_TILD, KC_GRV,  KC_LABK, KC_RABK, KC_QUES, KC_SLSH, KC_QUOT, KC_DQUO, KC_SCLN, KC_COLN,
+        KC_EXLM, KC_COLN,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_PIPE, KC_BSLS,
+        KC_MINS, KC_PLUS, KC_EQL,  KC_UNDS, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, KC_LPRN, KC_RPRN,
+        KC_TILD, KC_GRV,  KC_LABK, KC_RABK, KC_QUES, KC_SLSH, KC_DQUO, KC_QUOT, KC_SCLN, KC_AT,
         _______, _______, _______, _______, _______, _______
     ),
 
@@ -87,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_RIV] = LAYOUT_split_3x5_3(
         RIV_TAG1, RIV_TAG2, RIV_TAG3, RIV_TAG4, RIV_TAG5, RIV_TAG6, RIV_TAG7, RIV_TAG8, RIV_TAG9, RIV_CLOSE,
         RIV_LAUNCHER, RIV_LAST, RIV_FOCUS_PREV, RIV_FOCUS_NEXT, RIV_FLOAT, RIV_FULL, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,
-        RIV_TERM, _______, _______, _______, RIV_RATIO_DEC, RIV_RATIO_INC, _______, _______, _______, _______,
+        RIV_TERM, _______, CTRL_C, CTRL_V, RIV_RATIO_DEC, RIV_RATIO_INC, CTRL_R, CTRL_T, CTRL_F, _______,
         _______, _______, _______, _______, _______, _______
     ),
 
@@ -101,30 +106,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 bool is_oneshot_cancel_key(uint16_t keycode) {
-    switch (keycode) {
-        case LA_SYM:
-        case LA_NAV:
-        case LA_RIV:
-            return true;
-        default:
-            return false;
-    }
+  switch (keycode) {
+  case LA_SYM:
+  case LA_NAV:
+  case LA_RIV:
+    return true;
+  default:
+    return false;
+  }
 }
 
 bool is_oneshot_ignored_key(uint16_t keycode) {
-    switch (keycode) {
-        case LA_SYM:
-        case LA_NAV:
-        case LA_RIV:
-        case KC_LSFT:
-        case OS_SHFT:
-        case OS_CTRL:
-        case OS_ALT:
-        case OS_CMD:
-            return true;
-        default:
-            return false;
-    }
+  switch (keycode) {
+  case LA_SYM:
+  case LA_NAV:
+  case LA_RIV:
+  case KC_LSFT:
+  case OS_SHFT:
+  case OS_CTRL:
+  case OS_ALT:
+  case OS_CMD:
+    return true;
+  default:
+    return false;
+  }
 }
 
 bool sw_win_active = false;
@@ -132,21 +137,23 @@ bool sw_tab_active = false;
 
 oneshot_state os_shft_state = os_up_unqueued;
 oneshot_state os_ctrl_state = os_up_unqueued;
-oneshot_state os_alt_state  = os_up_unqueued;
-oneshot_state os_cmd_state  = os_up_unqueued;
+oneshot_state os_alt_state = os_up_unqueued;
+oneshot_state os_cmd_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, OS_SHFT, keycode, record);
-    update_swapper(&sw_tab_active, KC_LCTL, KC_TAB, SW_TAB, OS_SHFT, keycode, record);
+  update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, OS_SHFT, keycode,
+                 record);
+  update_swapper(&sw_tab_active, KC_LCTL, KC_TAB, SW_TAB, OS_SHFT, keycode,
+                 record);
 
-    update_oneshot(&os_shft_state, KC_LSFT, OS_SHFT, keycode, record);
-    update_oneshot(&os_ctrl_state, KC_LCTL, OS_CTRL, keycode, record);
-    update_oneshot(&os_alt_state, KC_LALT, OS_ALT, keycode, record);
-    update_oneshot(&os_cmd_state, KC_LCMD, OS_CMD, keycode, record);
+  update_oneshot(&os_shft_state, KC_LSFT, OS_SHFT, keycode, record);
+  update_oneshot(&os_ctrl_state, KC_LCTL, OS_CTRL, keycode, record);
+  update_oneshot(&os_alt_state, KC_LALT, OS_ALT, keycode, record);
+  update_oneshot(&os_cmd_state, KC_LCMD, OS_CMD, keycode, record);
 
-    return true;
+  return true;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _SYM, _NAV, _NUM);
+  return update_tri_layer_state(state, _SYM, _NAV, _NUM);
 }
