@@ -20,7 +20,6 @@
 #define TAB_L C(S(KC_TAB))
 #define TAB_R C(KC_TAB)
 
-// River-specific shortcuts (using Super key) - now all as macros
 #define RIV_FOCUS_NEXT G(KC_J) // Super+J: focus next window
 #define RIV_FOCUS_PREV G(KC_K) // Super+K: focus prev window
 #define RIV_RATIO_DEC G(KC_H)  // Super+H: decrease main ratio
@@ -76,9 +75,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_SYM] = LAYOUT_split_3x5_3(
-        KC_EXLM, KC_COLN,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_PIPE, KC_BSLS,
+        KC_EXLM, KC_COLN,   KC_HASH, KC_DLR, KC_PERC, KC_QUOT, KC_DQUO, KC_ASTR, KC_PIPE, KC_BSLS,
         KC_MINS, KC_PLUS, KC_EQL,  KC_UNDS, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, KC_LPRN, KC_RPRN,
-        KC_TILD, KC_GRV,  KC_LABK, KC_RABK, KC_QUES, KC_SLSH, KC_DQUO, KC_QUOT, KC_SCLN, KC_AT,
+        KC_TILD, KC_GRV,  KC_LABK, KC_RABK, KC_QUES, KC_SLSH, KC_AMPR, KC_CIRC, KC_SCLN, KC_AT,
         _______, _______, _______, _______, _______, _______
     ),
 
