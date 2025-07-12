@@ -45,3 +45,5 @@ CMD | ALT | CTRL| SHFT| F11 |   | F12 | SHFT| CTRL| ALT | CMD
 F1  | F2  | F3  | F4  | F5  |   | F6  | F7  | F8  | F9  | F10
             ___ | ___ | ___ |   | ___ | ___ | ___
 ```
+
+Future plans is to remove the ESC key from the homerow since I accidentally press it so much. And also create a sort of media layer or something such that the number layer becomes better.
