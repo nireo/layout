@@ -8,6 +8,7 @@
 #define LA_NAV MO(_NAV)
 #define LA_RIV MO(_RIV)
 #define LA_NUM MO(_NUM)
+#define LA_EXT MO(_EXT)
 #define QUOT S(KC_GRV)
 #define PIPE S(KC_BSLS)
 #define DPIPE S(RALT(KC_BSLS))
@@ -48,13 +49,7 @@
 #define CTRL_T C(KC_T)
 #define CTRL_F C(KC_F)
 
-enum layers {
-  _DEF,
-  _SYM,
-  _NAV,
-  _RIV,
-  _NUM,
-};
+enum layers { _DEF, _SYM, _NAV, _RIV, _NUM, _EXT };
 
 enum keycodes {
   // Custom oneshot mod implementation with no timers.
@@ -72,34 +67,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-        LA_NUM,  KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_RIV
+                          LA_EXT,  KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_RIV
     ),
 
     [_SYM] = LAYOUT_split_3x5_3(
-        KC_EXLM, KC_COLN, KC_HASH, KC_DLR, KC_PERC, KC_QUOT, KC_DQUO, KC_ASTR, KC_PIPE, KC_BSLS,
+        KC_EXLM, KC_COLN, KC_HASH, KC_DLR,  KC_PERC, KC_QUOT, KC_DQUO, KC_ASTR, KC_PIPE, KC_BSLS,
         KC_MINS, KC_PLUS, KC_EQL,  KC_UNDS, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, KC_LPRN, KC_RPRN,
         KC_TILD, KC_GRV,  KC_LABK, KC_RABK, KC_QUES, KC_SLSH, KC_AMPR, KC_CIRC, KC_SCLN, KC_AT,
-        _______, _______, _______, _______, _______, _______
+                          _______, _______, _______, _______, _______, _______
     ),
 
     [_NAV] = LAYOUT_split_3x5_3(
-        SW_TAB,  SW_WIN,  TAB_L,   TAB_R,   VIM_D,  VIM_U,  KC_HOME, KC_UP,  KC_BSPC, KC_DEL,
+        SW_TAB,  SW_WIN,  TAB_L,   TAB_R,   KC_ESC,  KC_ESC,  KC_HOME, KC_UP,  KC_BSPC, KC_DEL,
         OS_CMD,  OS_ALT,  OS_CTRL, OS_SHFT, KC_ENT,  KC_ENT,  KC_LEFT, KC_DOWN, KC_RGHT,   KC_END,
         SPACE_L, SPACE_R, C(KC_Z), C(KC_Y), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, KC_NUM,
-        _______, _______, _______, _______, _______, _______
+                          _______, _______, _______, _______, _______, _______
     ),
 
     [_RIV] = LAYOUT_split_3x5_3(
-        RIV_TAG1, RIV_TAG2, RIV_TAG3, RIV_TAG4, RIV_TAG5, RIV_TAG6, RIV_TAG7, RIV_TAG8, RIV_TAG9, RIV_CLOSE,
-        RIV_LAUNCHER, RIV_LAST, RIV_FOCUS_PREV, RIV_FOCUS_NEXT, RIV_FLOAT, RIV_FULL, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,
-        RIV_TERM, _______, CTRL_C, CTRL_V, RIV_RATIO_DEC, RIV_RATIO_INC, CTRL_R, CTRL_T, CTRL_F, _______,
+        RIV_TAG1,     RIV_TAG2, RIV_TAG3,       RIV_TAG4,       RIV_TAG5,      RIV_TAG6,      RIV_TAG7, RIV_TAG8, RIV_TAG9, RIV_CLOSE,
+        RIV_LAUNCHER, RIV_LAST, RIV_FOCUS_PREV, RIV_FOCUS_NEXT, RIV_FLOAT,     RIV_FULL,      _______,  _______,  _______,  _______,
+        RIV_TERM,     _______,  CTRL_C,         CTRL_V,         RIV_RATIO_DEC, RIV_RATIO_INC, CTRL_R,   CTRL_T,   CTRL_F,   _______,
                            _______, _______, _______, _______, _______, _______
     ),
 
     [_NUM] = LAYOUT_split_3x5_3(
-        KC_1,    KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,  KC_9,     KC_0,    // !
-        OS_CMD,  OS_ALT,  OS_CTRL, OS_SHFT, KC_F11,  KC_F12,  OS_SHFT, OS_CTRL, OS_ALT,  OS_CMD,
-        KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
+        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+        KC_MPRV,  KC_MNXT,  KC_MSTP, KC_MPLY, KC_VOLU,  KC_F12,  OS_SHFT, OS_CTRL, OS_ALT,  OS_CMD,
+        KC_KB_VOLUME_DOWN,  KC_KB_VOLUME_UP,   KC_VOLD,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
+                          _______, _______, _______, _______, _______, _______
+    )
+
+    [_EXT] = LAYOUT_split_3x5_3(
+        A(KC_F4), C(KC_W), KC_3,     CTRL_R,  CTRL_T,    KC_DOT,  KC_1,    KC_2,    KC_3,   KC_9,
+        C(KC_A),  C(KC_S), C(KC_D),  CTRL_F,  KC_PLUS,  KC_0,    KC_4,    KC_5,    KC_6,   OS_ALT,
+        KC_SLSH,  KC_ASTR, CTRL_C,   CTRL_V,  KC_MINS,   KC_COMM, KC_7,    KC_8,    KC_9,   KC_F10,
                           _______, _______, _______, _______, _______, _______
     )
 };
@@ -109,6 +111,7 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
   switch (keycode) {
   case LA_SYM:
   case LA_NAV:
+  case LA_EXT:
   case LA_RIV:
     return true;
   default:
@@ -119,6 +122,7 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
 bool is_oneshot_ignored_key(uint16_t keycode) {
   switch (keycode) {
   case LA_SYM:
+  case LA_EXT:
   case LA_NAV:
   case LA_RIV:
   case KC_LSFT:
