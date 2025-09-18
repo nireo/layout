@@ -117,9 +117,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_EXT] = LAYOUT_split_3x5_3(
-        G(KC_W),  G(KC_W), KC_3,     CTRL_R,  CTRL_T,    KC_DOT,  KC_1,    KC_2,    KC_3,   KC_9,
-        CTRL_A,   CTRL_S,  G(KC_D),  CTRL_F,  KC_PLUS,   KC_0,    KC_4,    KC_5,    KC_6,   G(KC_TAB),
-        KC_SLSH,  KC_ASTR, CTRL_C,   CTRL_V,  KC_MINS,   KC_COMM, KC_7,    KC_8,    KC_9,   KC_LCMD,
+        G(KC_W),  G(KC_W), KC_MS_U,  CTRL_R,  CTRL_T,    KC_WH_U, KC_BTN1, KC_MS_U, KC_BTN2, KC_9,
+        CTRL_A,   CTRL_S,  KC_MS_D,  CTRL_F,  KC_PLUS,   KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, G(KC_TAB),
+        KC_SLSH,  KC_ASTR, CTRL_C,   CTRL_V,  KC_MINS,   KC_COMM, KC_BTN1, KC_WH_D, KC_BTN2, KC_LCMD,
                           _______, _______, _______, _______, _______, _______
     )
 };
