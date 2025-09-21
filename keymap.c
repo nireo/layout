@@ -8,7 +8,6 @@
 #define LA_NAV MO(_NAV)
 #define LA_MAC MO(_MAC)
 #define LA_NUM MO(_NUM)
-#define LA_EXT MO(_EXT)
 #define QUOT S(KC_GRV)
 #define PIPE S(KC_BSLS)
 #define DPIPE S(RALT(KC_BSLS))
@@ -38,6 +37,9 @@
 #define WIN_CYCLE_REV G(S(KC_TAB))
 #define WIN_FULL G(C(KC_F))
 
+#define RECT_LEFT C(A(KC_LEFT))
+#define RECT_RIGHT C(A(KC_RGHT))
+
 #define SCREENSHOT_FULL G(S(KC_3))
 #define SCREENSHOT_AREA G(S(KC_4))
 #define SCREENSHOT_WINDOW G(S(KC_4))
@@ -62,7 +64,13 @@
 #define CTRL_Z G(KC_Z)
 #define CTRL_Y G(S(KC_Z))
 
-enum layers { _DEF, _SYM, _NAV, _MAC, _NUM, _EXT };
+enum layers {
+    _DEF,
+    _SYM,
+    _NAV,
+    _MAC,
+    _NUM,
+};
 
 enum keycodes {
     // Custom oneshot mod implementation with no timers.
@@ -80,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-                          LA_EXT,  KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_MAC
+                          KC_LCMD,  KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_MAC
     ),
 
     [_SYM] = LAYOUT_split_3x5_3(
@@ -98,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_MAC] = LAYOUT_split_3x5_3(
-        _______,       _______,       MAC_MISSION,      MAC_APP_EXPOSE,   MAC_DESKTOP,     SCREENSHOT_FULL, SCREENSHOT_AREA, SCREENSHOT_CLIPBOARD, SCREENSHOT_AREA_CLIP, WIN_CLOSE,
+        RECT_LEFT, RECT_RIGHT, MAC_MISSION,      MAC_APP_EXPOSE,   MAC_DESKTOP,     SCREENSHOT_FULL, SCREENSHOT_AREA, SCREENSHOT_CLIPBOARD, SCREENSHOT_AREA_CLIP, WIN_CLOSE,
         MAC_SPOTLIGHT, WIN_CYCLE,     WIN_MINIMIZE,     WIN_HIDE,         WIN_FULL,        LANG_NEXT,       LANG_PREV,       WIN_QUIT,             MAC_LAUNCHPAD,        MAC_DOCK,
         _______, APP_FINDER, CTRL_C, CTRL_V, _______,  _______,  CTRL_A, CTRL_S, CTRL_F, _______,
                             _______, _______, _______, _______, _______, _______
@@ -110,13 +118,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_VOLD, KC_VOLU, KC_MUTE, KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
                           _______, _______, _______, _______, _______, _______
     ),
-
-    [_EXT] = LAYOUT_split_3x5_3(
-        G(KC_W),  G(KC_W), KC_MS_U,  CTRL_R,  CTRL_T,    KC_WH_U, KC_BTN1, KC_MS_U, KC_BTN2, KC_9,
-        CTRL_A,   CTRL_S,  KC_MS_D,  CTRL_F,  KC_PLUS,   KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, G(KC_TAB),
-        KC_SLSH,  KC_ASTR, CTRL_C,   CTRL_V,  KC_MINS,   KC_COMM, KC_BTN1, KC_WH_D, KC_BTN2, KC_LCMD,
-                          _______, _______, _______, _______, _______, _______
-    )
 };
 // clang-format on
 
@@ -124,7 +125,6 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
         case LA_SYM:
         case LA_NAV:
-        case LA_EXT:
         case LA_MAC:
             return true;
         default:
@@ -135,7 +135,6 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
 bool is_oneshot_ignored_key(uint16_t keycode) {
     switch (keycode) {
         case LA_SYM:
-        case LA_EXT:
         case LA_NAV:
         case LA_MAC:
         case KC_LSFT:
