@@ -7,7 +7,7 @@
 #define LA_SYM MO(_SYM)
 #define LA_NAV MO(_NAV)
 #define LA_NUM MO(_NUM)
-#define LA_FN MO(_FN)
+#define LA_MAC MO(_MAC) // was LA_FN
 #define QUOT S(KC_GRV)
 #define PIPE S(KC_BSLS)
 #define DPIPE S(RALT(KC_BSLS))
@@ -48,16 +48,46 @@
 #define CTRL_T C(KC_T)
 #define CTRL_F C(KC_F)
 
-enum layers { _DEF, _SYM, _NAV, _NUM, _FN };
+// --- macOS helpers ---
+
+// Spotlight
+#define MAC_SPOTLIGHT G(KC_SPC)
+
+// Language switch (previous input source – macOS default)
+#define MAC_LANGSW C(KC_SPC)
+
+// Screenshots
+#define MAC_SS_FULL S(G(KC_3)) // ⌘⇧3
+#define MAC_SS_SEL S(G(KC_4)) // ⌘⇧4 (area)
+#define MAC_SS_CLIP C(S(G(KC_4))) // ⌃⌘⇧4 (area to clipboard)
+
+// Rectangle-style window management (defaults: Ctrl+Opt+Arrow / Enter)
+#define RECT_LEFT C(A(KC_LEFT)) // left half
+#define RECT_RIGHT C(A(KC_RGHT)) // right half
+#define RECT_MAX C(A(KC_ENT)) // maximize
+#define RECT_CENTER C(A(KC_C)) // center
+
+// macOS window management
+#define MAC_MISSION C(KC_UP) // Mission Control
+#define MAC_APPWIN C(KC_DOWN) // App Exposé
+#define MAC_LOCK C(G(KC_Q)) // Lock screen
+#define MAC_SWITCH G(KC_TAB) // App switcher next (Cmd+Tab)
+#define MAC_SWITCH_BACK S(G(KC_TAB)) // App switcher prev (Shift+Cmd+Tab)
+
+enum layers { _DEF,
+    _SYM,
+    _NAV,
+    _NUM,
+    _MAC };
 
 enum keycodes {
-  // Custom oneshot mod implementation with no timers.
-  OS_SHFT = SAFE_RANGE,
-  OS_CTRL,
-  OS_ALT,
-  OS_CMD,
-  SW_WIN, // Switch to next window (alt-tab)
-  SW_TAB, // Switch to next browser tab (ctrl-tab)
+    // Custom oneshot mod implementation with no timers.
+    OS_SHFT = SAFE_RANGE,
+    OS_CTRL,
+    OS_ALT,
+    OS_CMD,
+    SW_WIN, // Switch to next window (alt-tab)
+    SW_TAB, // Switch to next browser tab (ctrl-tab)
 };
 
 // clang-format off
@@ -66,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-                          KC_LCTL, KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_FN
+                          KC_CMD, KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_MAC
     ),
 
     [_SYM] = LAYOUT_split_3x5_3(
@@ -90,41 +120,52 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                           _______, _______, _______, _______, _______, _______
     ),
 
-    [_FN] = LAYOUT_split_3x5_3(
-        RIV_TAG1,   RIV_TAG2,   RIV_TAG3,   RIV_TAG4,   RIV_TAG5,   RIV_TAG6,   RIV_TAG7,  RIV_TAG8,   RIV_TAG9,
-        KC_F1,     KC_F2,      KC_F3,      KC_F4,       KC_F5,      KC_6,       KC_F7,     KC_F8,      KC_F9, KC_F10,
-        RESET,   RIV_FLOAT, RIV_FULL, RIV_LAST, RIV_TERM, KC_MUTE, KC_BRID, KC_BRIU, RIV_TAG9, ___,
+    // macOS layer (replaces old FN layer)
+    [_MAC] = LAYOUT_split_3x5_3(
+        // Spotlight + language switch + screenshots | Rectangle on right
+        MAC_SPOTLIGHT, MAC_LANGSW, MAC_SS_FULL, MAC_SS_SEL, MAC_SS_CLIP,
+        RECT_LEFT,     RECT_RIGHT, RECT_MAX,    RECT_CENTER, _______,
+
+        // Mission control / app windows / lock / app switcher + some app helpers
+        MAC_MISSION,   MAC_APPWIN, MAC_LOCK,    MAC_SWITCH,  MAC_SWITCH_BACK,
+        G(KC_W),       G(KC_T),    G(KC_N),     G(KC_Q),     _______,
+
+        // Utility: reset, media, volume, brightness
+        RESET,         KC_MUTE,    KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, KC_MPLY,
+        KC_MPRV,       KC_MNXT,    KC_BRID,          KC_BRIU,          ___,
                           _______, _______, _______, _______, _______, _______
     )
 };
 // clang-format on
 
-bool is_oneshot_cancel_key(uint16_t keycode) {
-  switch (keycode) {
-  case LA_SYM:
-  case LA_NAV:
-  case LA_FN:
-    return true;
-  default:
-    return false;
-  }
+bool is_oneshot_cancel_key(uint16_t keycode)
+{
+    switch (keycode) {
+    case LA_SYM:
+    case LA_NAV:
+    case LA_MAC:
+        return true;
+    default:
+        return false;
+    }
 }
 
-bool is_oneshot_ignored_key(uint16_t keycode) {
-  switch (keycode) {
-  case LA_SYM:
-  case LA_NAV:
-  case LA_FN:
-  case KC_LSFT:
-  case KC_LCTL:
-  case OS_SHFT:
-  case OS_CTRL:
-  case OS_ALT:
-  case OS_CMD:
-    return true;
-  default:
-    return false;
-  }
+bool is_oneshot_ignored_key(uint16_t keycode)
+{
+    switch (keycode) {
+    case LA_SYM:
+    case LA_NAV:
+    case LA_MAC:
+    case KC_LSFT:
+    case KC_LCTL:
+    case OS_SHFT:
+    case OS_CTRL:
+    case OS_ALT:
+    case OS_CMD:
+        return true;
+    default:
+        return false;
+    }
 }
 
 bool sw_win_active = false;
@@ -135,20 +176,22 @@ oneshot_state os_ctrl_state = os_up_unqueued;
 oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_cmd_state = os_up_unqueued;
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, OS_SHFT, keycode,
-                 record);
-  update_swapper(&sw_tab_active, KC_LCTL, KC_TAB, SW_TAB, OS_SHFT, keycode,
-                 record);
+bool process_record_user(uint16_t keycode, keyrecord_t* record)
+{
+    update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, OS_SHFT, keycode,
+        record);
+    update_swapper(&sw_tab_active, KC_LCTL, KC_TAB, SW_TAB, OS_SHFT, keycode,
+        record);
 
-  update_oneshot(&os_shft_state, KC_LSFT, OS_SHFT, keycode, record);
-  update_oneshot(&os_ctrl_state, KC_LCTL, OS_CTRL, keycode, record);
-  update_oneshot(&os_alt_state, KC_LALT, OS_ALT, keycode, record);
-  update_oneshot(&os_cmd_state, KC_LCMD, OS_CMD, keycode, record);
+    update_oneshot(&os_shft_state, KC_LSFT, OS_SHFT, keycode, record);
+    update_oneshot(&os_ctrl_state, KC_LCTL, OS_CTRL, keycode, record);
+    update_oneshot(&os_alt_state, KC_LALT, OS_ALT, keycode, record);
+    update_oneshot(&os_cmd_state, KC_LCMD, OS_CMD, keycode, record);
 
-  return true;
+    return true;
 }
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _SYM, _NAV, _NUM);
+layer_state_t layer_state_set_user(layer_state_t state)
+{
+    return update_tri_layer_state(state, _SYM, _NAV, _NUM);
 }
