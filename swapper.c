@@ -21,6 +21,7 @@ void update_swapper(
             // Don't unregister cmdish until some other key is hit or released.
         }
     } else if (*active
+        && keycode != tabish
         && keycode != reverse_key
         && keycode != KC_LEFT
         && keycode != KC_RIGHT

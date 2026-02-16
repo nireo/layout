@@ -20,25 +20,6 @@
 #define TAB_L C(S(KC_TAB))
 #define TAB_R C(KC_TAB)
 
-#define RIV_FOCUS_NEXT G(KC_J)
-#define RIV_FOCUS_PREV G(KC_K)
-#define RIV_RATIO_DEC G(KC_H)
-#define RIV_RATIO_INC G(KC_L)
-#define RIV_CLOSE G(KC_Q)
-#define RIV_LAUNCHER G(KC_D)
-#define RIV_FLOAT G(KC_SPC)
-#define RIV_FULL G(KC_F)
-#define RIV_LAST G(KC_TAB)
-#define RIV_TERM G(KC_ENT)
-#define RIV_TAG1 G(KC_1)
-#define RIV_TAG2 G(KC_2)
-#define RIV_TAG3 G(KC_3)
-#define RIV_TAG4 G(KC_4)
-#define RIV_TAG5 G(KC_5)
-#define RIV_TAG6 G(KC_6)
-#define RIV_TAG7 G(KC_7)
-#define RIV_TAG8 G(KC_8)
-#define RIV_TAG9 G(KC_9)
 #define VIM_U C(KC_U)
 #define VIM_D C(KC_D)
 #define CTRL_V C(KC_V)
@@ -46,6 +27,25 @@
 #define CTRL_R C(KC_R)
 #define CTRL_T C(KC_T)
 #define CTRL_F C(KC_F)
+
+// macOS helpers
+#define MAC_SPOTLIGHT G(KC_SPC)
+#define MAC_LANGSW C(KC_SPC)
+#define MAC_SS_FULL S(G(KC_3))
+#define MAC_SS_SEL S(G(KC_4))
+#define MAC_SS_CLIP C(S(G(KC_4)))
+
+// Rectangle defaults: Ctrl+Alt+Arrow / Enter / C
+#define RECT_LEFT C(A(KC_LEFT))
+#define RECT_RIGHT C(A(KC_RGHT))
+#define RECT_MAX C(A(KC_ENT))
+#define RECT_CENTER C(A(KC_C))
+
+#define MAC_MISSION C(KC_UP)
+#define MAC_APPWIN C(KC_DOWN)
+#define MAC_LOCK C(G(KC_Q))
+#define MAC_SWITCH G(KC_TAB)
+#define MAC_SWITCH_BACK S(G(KC_TAB))
 
 enum layers { _DEF,
     _SYM,
@@ -60,8 +60,6 @@ enum keycodes {
     OS_CMD,
     SW_WIN, // Switch to next window (alt-tab) - kept for compatibility
     SW_TAB, // Switch to next browser tab (ctrl-tab)
-    // River WM shortcuts accessed via tap-hold
-    RIV_SPC, // Space/River layer
 };
 
 // clang-format off
@@ -89,8 +87,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NUM] = LAYOUT_split_3x5_2(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        RIV_TAG1, RIV_TAG2, RIV_TAG3, RIV_TAG4, RIV_FOCUS_PREV, RIV_FOCUS_NEXT,  OS_SHFT, OS_CTRL, OS_ALT,  OS_CMD,
-        KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, RIV_LAUNCHER, RIV_RATIO_DEC, RIV_RATIO_INC, RIV_TERM, RIV_CLOSE, KC_F8, KC_F9, KC_F10,
+        MAC_SPOTLIGHT, MAC_LANGSW, MAC_SS_FULL, MAC_SS_SEL, MAC_SS_CLIP, RECT_LEFT, RECT_RIGHT, RECT_MAX, RECT_CENTER, MAC_MISSION,
+        KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, KC_MUTE, KC_MPRV, KC_MPLY, KC_MNXT, MAC_APPWIN, MAC_SWITCH, MAC_SWITCH_BACK, MAC_LOCK,
                                    _______, _______, _______, _______
     )
 };
