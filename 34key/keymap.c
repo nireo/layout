@@ -28,14 +28,12 @@
 #define CTRL_T C(KC_T)
 #define CTRL_F C(KC_F)
 
-// macOS helpers
 #define MAC_SPOTLIGHT G(KC_SPC)
 #define MAC_LANGSW C(KC_SPC)
 #define MAC_SS_FULL S(G(KC_3))
 #define MAC_SS_SEL S(G(KC_4))
 #define MAC_SS_CLIP C(S(G(KC_4)))
 
-// Rectangle defaults: Ctrl+Alt+Arrow / Enter / C
 #define RECT_LEFT C(A(KC_LEFT))
 #define RECT_RIGHT C(A(KC_RGHT))
 #define RECT_MAX C(A(KC_ENT))
@@ -53,7 +51,6 @@ enum layers { _DEF,
     _NUM };
 
 enum keycodes {
-    // Custom oneshot mod implementation with no timers.
     OS_SHFT = SAFE_RANGE,
     OS_CTRL,
     OS_ALT,
@@ -87,8 +84,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NUM] = LAYOUT_split_3x5_2(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        MAC_SPOTLIGHT, MAC_LANGSW, MAC_SS_FULL, MAC_SS_SEL, MAC_SS_CLIP, RECT_LEFT, RECT_RIGHT, RECT_MAX, RECT_CENTER, MAC_MISSION,
-        KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, KC_MUTE, KC_MPRV, KC_MPLY, KC_MNXT, MAC_APPWIN, MAC_SWITCH, MAC_SWITCH_BACK, MAC_LOCK,
+        MAC_SPOTLIGHT, MAC_LANGSW, MAC_SS_FULL, MAC_SS_SEL, MAC_SS_CLIP, KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, OS_CTRL, OS_ALT, OS_CMD,
+        RECT_LEFT, RECT_CENTER, RECT_RIGHT, RECT_MAX, KC_MPLY, KC_MNXT, MAC_APPWIN, MAC_SWITCH, MAC_SWITCH_BACK, MAC_LOCK,
                                    _______, _______, _______, _______
     )
 };
