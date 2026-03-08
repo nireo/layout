@@ -2,44 +2,27 @@
 #include "oneshot.h"
 #include "swapper.h"
 
-#define RESET QK_BOOT
-#define ___ KC_NO
 #define LA_SYM MO(_SYM)
 #define LA_NAV MO(_NAV)
 #define LA_NUM MO(_NUM)
-#define QUOT S(KC_GRV)
-#define PIPE S(KC_BSLS)
-#define DPIPE S(RALT(KC_BSLS))
-#define SCLN S(KC_LBRC)
-#define CLN S(KC_RBRC)
-#define GRV RALT(KC_GRV)
-#define BSL RALT(KC_BSLS)
-#define NBSP RALT(KC_SPC)
-#define SPACE_L C(G(KC_LEFT))
-#define SPACE_R C(G(KC_RGHT))
 #define TAB_L C(S(KC_TAB))
-#define TAB_R C(KC_TAB)
 
 #define VIM_U C(KC_U)
 #define VIM_D C(KC_D)
-#define CTRL_V C(KC_V)
-#define CTRL_C C(KC_C)
-#define CTRL_R C(KC_R)
-#define CTRL_T C(KC_T)
-#define CTRL_F C(KC_F)
 
+// macOS helpers
 #define MAC_SPOTLIGHT G(KC_SPC)
 #define MAC_LANGSW C(KC_SPC)
 #define MAC_SS_FULL S(G(KC_3))
 #define MAC_SS_SEL S(G(KC_4))
 #define MAC_SS_CLIP C(S(G(KC_4)))
 
+// Rectangle defaults: Ctrl+Alt+Arrow / Enter / C
 #define RECT_LEFT C(A(KC_LEFT))
 #define RECT_RIGHT C(A(KC_RGHT))
 #define RECT_MAX C(A(KC_ENT))
 #define RECT_CENTER C(A(KC_C))
 
-#define MAC_MISSION C(KC_UP)
 #define MAC_APPWIN C(KC_DOWN)
 #define MAC_LOCK C(G(KC_Q))
 #define MAC_SWITCH G(KC_TAB)
@@ -51,10 +34,12 @@ enum layers { _DEF,
     _NUM };
 
 enum keycodes {
+    // Custom oneshot mod implementation with no timers.
     OS_SHFT = SAFE_RANGE,
     OS_CTRL,
     OS_ALT,
     OS_CMD,
+    SW_APP, // Switch to next app (cmd-tab)
     SW_WIN, // Switch to next window (alt-tab) - kept for compatibility
     SW_TAB, // Switch to next browser tab (ctrl-tab)
 };
@@ -76,9 +61,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_NAV] = LAYOUT_split_3x5_2(
-        SW_TAB,  TAB_L,   SW_WIN,  C(KC_R), VIM_U,   VIM_D,   KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
+        SW_TAB,  SW_APP,  TAB_L,   G(KC_R), VIM_U,   VIM_D,   KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
         OS_CMD,  OS_ALT,  OS_CTRL, KC_ESC,  KC_ENT,  KC_ENT,  KC_LEFT, KC_DOWN, KC_RGHT, KC_END,
-        C(KC_Z), C(KC_X), C(KC_V), C(KC_C), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, KC_NUM,
+        G(KC_Z), G(KC_X), G(KC_V), G(KC_C), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, LA_NUM,
                                    _______, _______, _______, _______
     ),
 
@@ -120,6 +105,7 @@ bool is_oneshot_ignored_key(uint16_t keycode)
 
 bool sw_win_active = false;
 bool sw_tab_active = false;
+bool sw_app_active = false;
 
 oneshot_state os_shft_state = os_up_unqueued;
 oneshot_state os_ctrl_state = os_up_unqueued;
@@ -128,6 +114,8 @@ oneshot_state os_cmd_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record)
 {
+    update_swapper(&sw_app_active, KC_LCMD, KC_TAB, SW_APP, OS_SHFT, keycode,
+        record);
     update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, OS_SHFT, keycode,
         record);
     update_swapper(&sw_tab_active, KC_LCTL, KC_TAB, SW_TAB, OS_SHFT, keycode,
