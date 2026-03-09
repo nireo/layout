@@ -73,6 +73,8 @@
 #define MAC_LOCK C(G(KC_Q)) // Lock screen
 #define MAC_SWITCH G(KC_TAB) // App switcher next (Cmd+Tab)
 #define MAC_SWITCH_BACK S(G(KC_TAB)) // App switcher prev (Shift+Cmd+Tab)
+#define MAC_TEXT_INC G(KC_EQL) // Increase text size (Cmd+)
+#define MAC_TEXT_DEC G(KC_MINS) // Decrease text size (Cmd-)
 
 enum layers { _DEF,
     _SYM,

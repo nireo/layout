@@ -27,6 +27,8 @@
 #define MAC_LOCK C(G(KC_Q))
 #define MAC_SWITCH G(KC_TAB)
 #define MAC_SWITCH_BACK S(G(KC_TAB))
+#define MAC_TEXT_INC G(KC_EQL)
+#define MAC_TEXT_DEC G(KC_MINS)
 
 enum layers { _DEF,
     _SYM,
@@ -61,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_NAV] = LAYOUT_split_3x5_2(
-        SW_TAB,  SW_APP,  TAB_L,   G(KC_R), VIM_U,   VIM_D,   KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
+        TAB_L,  SW_TAB,   SW_APP,  MAC_SWITCH_BACK, VIM_U,   VIM_D,   KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
         OS_CMD,  OS_ALT,  OS_CTRL, KC_ESC,  KC_ENT,  KC_ENT,  KC_LEFT, KC_DOWN, KC_RGHT, KC_END,
         G(KC_Z), G(KC_X), G(KC_V), G(KC_C), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, LA_NUM,
                                    _______, _______, _______, _______
@@ -70,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NUM] = LAYOUT_split_3x5_2(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
         MAC_SPOTLIGHT, MAC_LANGSW, MAC_SS_FULL, MAC_SS_SEL, MAC_SS_CLIP, KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, OS_CTRL, OS_ALT, OS_CMD,
-        RECT_LEFT, RECT_CENTER, RECT_RIGHT, RECT_MAX, KC_MPLY, KC_MNXT, MAC_APPWIN, MAC_SWITCH, MAC_SWITCH_BACK, MAC_LOCK,
+        RECT_LEFT, RECT_CENTER, RECT_RIGHT, RECT_MAX, KC_MPLY, KC_MNXT, MAC_APPWIN, MAC_TEXT_INC, MAC_TEXT_DEC, MAC_LOCK,
                                    _______, _______, _______, _______
     )
 };
