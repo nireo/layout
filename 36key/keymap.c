@@ -2,85 +2,49 @@
 #include "oneshot.h"
 #include "swapper.h"
 
-#define RESET QK_BOOT
-#define ___ KC_NO
 #define LA_SYM MO(_SYM)
 #define LA_NAV MO(_NAV)
 #define LA_NUM MO(_NUM)
-#define LA_MAC MO(_MAC) // was LA_FN
-#define QUOT S(KC_GRV)
-#define PIPE S(KC_BSLS)
-#define DPIPE S(RALT(KC_BSLS))
-#define SCLN S(KC_LBRC)
-#define CLN S(KC_RBRC)
-#define GRV RALT(KC_GRV)
-#define BSL RALT(KC_BSLS)
-#define NBSP RALT(KC_SPC)
-#define SPACE_L C(G(KC_LEFT))
-#define SPACE_R C(G(KC_RGHT))
+#define LA_WM MO(_WM)
 #define TAB_L C(S(KC_TAB))
-#define TAB_R C(KC_TAB)
 
-#define RIV_FOCUS_NEXT G(KC_J)
-#define RIV_FOCUS_PREV G(KC_K)
-#define RIV_RATIO_DEC G(KC_H)
-#define RIV_RATIO_INC G(KC_L)
-#define RIV_CLOSE G(KC_Q)
-#define RIV_LAUNCHER G(KC_D)
-#define RIV_FLOAT G(KC_SPC)
-#define RIV_FULL G(KC_F)
-#define RIV_LAST G(KC_TAB)
-#define RIV_TERM G(KC_ENT)
-#define RIV_TAG1 G(KC_1)
-#define RIV_TAG2 G(KC_2)
-#define RIV_TAG3 G(KC_3)
-#define RIV_TAG4 G(KC_4)
-#define RIV_TAG5 G(KC_5)
-#define RIV_TAG6 G(KC_6)
-#define RIV_TAG7 G(KC_7)
-#define RIV_TAG8 G(KC_8)
-#define RIV_TAG9 G(KC_9)
 #define VIM_U C(KC_U)
 #define VIM_D C(KC_D)
-#define CTRL_V C(KC_V)
-#define CTRL_C C(KC_C)
-#define CTRL_R C(KC_R)
-#define CTRL_T C(KC_T)
-#define CTRL_F C(KC_F)
 
-// --- macOS helpers ---
+#define AER_KITTY A(KC_ENT)
+#define AER_RESIZE A(KC_R)
+#define AER_FLOAT A(S(KC_SPC))
+#define AER_RELOAD A(S(KC_C))
 
-// Spotlight
+#define KIT_PRE C(KC_W)
+#define KIT_SPLIT_H C(KC_MINS)
+#define KIT_SPLIT_V C(S(KC_BSLS))
+
+// macOS helpers
 #define MAC_SPOTLIGHT G(KC_SPC)
-
-// Language switch (previous input source – macOS default)
 #define MAC_LANGSW C(KC_SPC)
 
-// Screenshots
-#define MAC_SS_FULL S(G(KC_3)) // ⌘⇧3
-#define MAC_SS_SEL S(G(KC_4)) // ⌘⇧4 (area)
-#define MAC_SS_CLIP C(S(G(KC_4))) // ⌃⌘⇧4 (area to clipboard)
+#define MAC_SS_FULL S(G(KC_3))
+#define MAC_SS_SEL S(G(KC_4))
+#define MAC_SS_CLIP C(S(G(KC_4)))
 
-// Rectangle-style window management (defaults: Ctrl+Opt+Arrow / Enter)
-#define RECT_LEFT C(A(KC_LEFT)) // left half
-#define RECT_RIGHT C(A(KC_RGHT)) // right half
-#define RECT_MAX C(A(KC_ENT)) // maximize
-#define RECT_CENTER C(A(KC_C)) // center
+// Rectangle defaults: Ctrl+Alt+Arrow / Enter / C
+#define RECT_LEFT C(A(KC_LEFT))
+#define RECT_RIGHT C(A(KC_RGHT))
+#define RECT_MAX C(A(KC_ENT))
+#define RECT_CENTER C(A(KC_C))
 
-// macOS window management
-#define MAC_MISSION C(KC_UP) // Mission Control
-#define MAC_APPWIN C(KC_DOWN) // App Exposé
-#define MAC_LOCK C(G(KC_Q)) // Lock screen
-#define MAC_SWITCH G(KC_TAB) // App switcher next (Cmd+Tab)
-#define MAC_SWITCH_BACK S(G(KC_TAB)) // App switcher prev (Shift+Cmd+Tab)
-#define MAC_TEXT_INC G(KC_EQL) // Increase text size (Cmd+)
-#define MAC_TEXT_DEC G(KC_MINS) // Decrease text size (Cmd-)
+#define MAC_APPWIN C(KC_DOWN)
+#define MAC_LOCK C(G(KC_Q))
+#define MAC_SWITCH_BACK S(G(KC_TAB))
+#define MAC_TEXT_INC G(KC_EQL)
+#define MAC_TEXT_DEC G(KC_MINS)
 
 enum layers { _DEF,
     _SYM,
     _NAV,
     _NUM,
-    _MAC };
+    _WM };
 
 enum keycodes {
     // Custom oneshot mod implementation with no timers.
@@ -88,8 +52,15 @@ enum keycodes {
     OS_CTRL,
     OS_ALT,
     OS_CMD,
-    SW_WIN, // Switch to next window (alt-tab)
+    SW_APP, // Switch to next app (cmd-tab)
+    SW_WIN, // Switch to next window (alt-tab) - kept for compatibility
     SW_TAB, // Switch to next browser tab (ctrl-tab)
+    KIT_FOCUS_L,
+    KIT_FOCUS_D,
+    KIT_FOCUS_U,
+    KIT_FOCUS_R,
+    KIT_QUIT,
+    KIT_EQ, // Kitty equalize panes (ctrl-w =)
 };
 
 // clang-format off
@@ -98,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-                          KC_CMD, KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_MAC
+                          KC_LCMD, KC_SPC,  LA_NAV,  LA_SYM,  KC_LSFT, LA_WM
     ),
 
     [_SYM] = LAYOUT_split_3x5_3(
@@ -109,43 +80,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_NAV] = LAYOUT_split_3x5_3(
-        SW_TAB,  SW_WIN,  TAB_L,   TAB_R,   OS_SHFT, KC_ESC,  KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
+        TAB_L,   SW_TAB,  SW_APP,  MAC_SWITCH_BACK, VIM_U,   VIM_D,   KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
         OS_CMD,  OS_ALT,  OS_CTRL, KC_ESC,  KC_ENT,  KC_ENT,  KC_LEFT, KC_DOWN, KC_RGHT, KC_END,
-        SPACE_L, SPACE_R, C(KC_Z), C(KC_Y), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, LA_NUM,
+        G(KC_Z), G(KC_X), G(KC_V), G(KC_C), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, LA_NUM,
                           _______, _______, _______, _______, _______, _______
     ),
 
     [_NUM] = LAYOUT_split_3x5_3(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        KC_MPRV, KC_MNXT, KC_MSTP, KC_MPLY, RIV_FOCUS_PREV, RIV_FOCUS_NEXT, OS_SHFT, OS_CTRL, OS_ALT, OS_CMD,
-        KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, RIV_LAUNCHER, RIV_RATIO_DEC, RIV_RATIO_INC, RIV_TERM, RIV_CLOSE, RIV_LAUNCHER, KC_F9, KC_F10,
+        MAC_SPOTLIGHT, MAC_LANGSW, MAC_SS_FULL, MAC_SS_SEL, MAC_SS_CLIP, KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, OS_CTRL, OS_ALT, OS_CMD,
+        RECT_LEFT, RECT_CENTER, RECT_RIGHT, RECT_MAX, KC_MPLY, KC_MNXT, MAC_APPWIN, MAC_TEXT_INC, MAC_TEXT_DEC, MAC_LOCK,
                           _______, _______, _______, _______, _______, _______
     ),
 
-    // macOS layer (replaces old FN layer)
-    [_MAC] = LAYOUT_split_3x5_3(
-        // Spotlight + language switch + screenshots | Rectangle on right
-        MAC_SPOTLIGHT, MAC_LANGSW, MAC_SS_FULL, MAC_SS_SEL, MAC_SS_CLIP,
-        RECT_LEFT,     RECT_RIGHT, RECT_MAX,    RECT_CENTER, _______,
-
-        // Mission control / app windows / lock / app switcher + some app helpers
-        MAC_MISSION,   MAC_APPWIN, MAC_LOCK,    MAC_SWITCH,  MAC_SWITCH_BACK,
-        G(KC_W),       G(KC_T),    G(KC_N),     G(KC_Q),     _______,
-
-        // Utility: reset, media, volume, brightness
-        RESET,         KC_MUTE,    KC_KB_VOLUME_DOWN, KC_KB_VOLUME_UP, KC_MPLY,
-        KC_MPRV,       KC_MNXT,    KC_BRID,          KC_BRIU,          ___,
+    [_WM] = LAYOUT_split_3x5_3(
+        A(KC_1),  A(KC_2),  A(KC_3),  A(KC_4),  A(KC_5),  A(KC_6),  A(KC_7),  A(KC_8),  A(KC_9),  A(KC_0),
+        OS_ALT,   KIT_PRE,  AER_KITTY, AER_RESIZE, _______,  KIT_FOCUS_L, KIT_FOCUS_D, KIT_FOCUS_U, KIT_FOCUS_R, KIT_QUIT,
+        _______,  _______,  AER_RELOAD, AER_FLOAT, _______,  KIT_SPLIT_H, KIT_SPLIT_V, KIT_EQ,  _______, _______,
                           _______, _______, _______, _______, _______, _______
     )
 };
 // clang-format on
+
+static void send_kitty_prefix(uint16_t keycode)
+{
+    tap_code16(C(KC_W));
+    tap_code16(keycode);
+}
 
 bool is_oneshot_cancel_key(uint16_t keycode)
 {
     switch (keycode) {
     case LA_SYM:
     case LA_NAV:
-    case LA_MAC:
+    case LA_WM:
         return true;
     default:
         return false;
@@ -157,9 +125,9 @@ bool is_oneshot_ignored_key(uint16_t keycode)
     switch (keycode) {
     case LA_SYM:
     case LA_NAV:
-    case LA_MAC:
+    case LA_WM:
     case KC_LSFT:
-    case KC_LCTL:
+    case KC_LCMD:
     case OS_SHFT:
     case OS_CTRL:
     case OS_ALT:
@@ -172,6 +140,7 @@ bool is_oneshot_ignored_key(uint16_t keycode)
 
 bool sw_win_active = false;
 bool sw_tab_active = false;
+bool sw_app_active = false;
 
 oneshot_state os_shft_state = os_up_unqueued;
 oneshot_state os_ctrl_state = os_up_unqueued;
@@ -180,6 +149,8 @@ oneshot_state os_cmd_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record)
 {
+    update_swapper(&sw_app_active, KC_LCMD, KC_TAB, SW_APP, OS_SHFT, keycode,
+        record);
     update_swapper(&sw_win_active, KC_LALT, KC_TAB, SW_WIN, OS_SHFT, keycode,
         record);
     update_swapper(&sw_tab_active, KC_LCTL, KC_TAB, SW_TAB, OS_SHFT, keycode,
@@ -190,7 +161,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
     update_oneshot(&os_alt_state, KC_LALT, OS_ALT, keycode, record);
     update_oneshot(&os_cmd_state, KC_LCMD, OS_CMD, keycode, record);
 
-    return true;
+    switch (keycode) {
+    case KIT_FOCUS_L:
+        if (record->event.pressed) {
+            send_kitty_prefix(KC_H);
+        }
+        return false;
+    case KIT_FOCUS_D:
+        if (record->event.pressed) {
+            send_kitty_prefix(KC_J);
+        }
+        return false;
+    case KIT_FOCUS_U:
+        if (record->event.pressed) {
+            send_kitty_prefix(KC_K);
+        }
+        return false;
+    case KIT_FOCUS_R:
+        if (record->event.pressed) {
+            send_kitty_prefix(KC_L);
+        }
+        return false;
+    case KIT_QUIT:
+        if (record->event.pressed) {
+            send_kitty_prefix(KC_Q);
+        }
+        return false;
+    case KIT_EQ:
+        if (record->event.pressed) {
+            send_kitty_prefix(KC_EQL);
+        }
+        return false;
+    default:
+        return true;
+    }
 }
 
 layer_state_t layer_state_set_user(layer_state_t state)
