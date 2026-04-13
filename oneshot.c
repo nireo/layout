@@ -1,6 +1,6 @@
 #include "oneshot.h"
 
-static bool* repeat_tab_flag(uint16_t mod)
+static bool *repeat_tab_flag(uint16_t mod)
 {
     static bool cmd_tab_repeat = false;
     static bool ctrl_tab_repeat = false;
@@ -16,13 +16,13 @@ static bool* repeat_tab_flag(uint16_t mod)
 }
 
 void update_oneshot(
-    oneshot_state* state,
+    oneshot_state *state,
     uint16_t mod,
     uint16_t trigger,
     uint16_t keycode,
-    keyrecord_t* record)
-{
-    bool* tab_repeat = repeat_tab_flag(mod);
+    keyrecord_t *record
+) {
+    bool *tab_repeat = repeat_tab_flag(mod);
 
     if (keycode == trigger) {
         if (record->event.pressed) {

@@ -15,10 +15,24 @@
 #define AER_RESIZE A(KC_R)
 #define AER_FLOAT A(S(KC_SPC))
 #define AER_RELOAD A(S(KC_C))
+#define AER_FOCUS_L A(KC_J)
+#define AER_FOCUS_D A(KC_K)
+#define AER_FOCUS_U A(KC_L)
+#define AER_FOCUS_R A(KC_SCLN)
+#define AER_MOVE_L A(S(KC_J))
+#define AER_MOVE_D A(S(KC_K))
+#define AER_MOVE_U A(S(KC_L))
+#define AER_MOVE_R A(S(KC_SCLN))
 
 #define KIT_PRE C(KC_W)
-#define KIT_SPLIT_H C(KC_MINS)
-#define KIT_SPLIT_V C(S(KC_BSLS))
+#define KIT_SPLIT_H C(A(KC_MINS))
+#define KIT_SPLIT_V C(A(KC_BSLS))
+#define KIT_FOCUS_L C(A(KC_H))
+#define KIT_FOCUS_D C(A(KC_J))
+#define KIT_FOCUS_U C(A(KC_K))
+#define KIT_FOCUS_R C(A(KC_L))
+#define KIT_QUIT C(A(KC_Q))
+#define KIT_EQ C(A(KC_EQL))
 
 // macOS helpers
 #define MAC_SPOTLIGHT G(KC_SPC)
@@ -55,12 +69,6 @@ enum keycodes {
     SW_APP, // Switch to next app (cmd-tab)
     SW_WIN, // Switch to next window (alt-tab) - kept for compatibility
     SW_TAB, // Switch to next browser tab (ctrl-tab)
-    KIT_FOCUS_L,
-    KIT_FOCUS_D,
-    KIT_FOCUS_U,
-    KIT_FOCUS_R,
-    KIT_QUIT,
-    KIT_EQ, // Kitty equalize panes (ctrl-w =)
 };
 
 // clang-format off
@@ -81,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NAV] = LAYOUT_split_3x5_3(
         TAB_L,   SW_TAB,  SW_APP,  MAC_SWITCH_BACK, VIM_U,   VIM_D,   KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
-        OS_CMD,  OS_ALT,  OS_CTRL, KC_ESC,  KC_ENT,  KC_ENT,  KC_LEFT, KC_DOWN, KC_RGHT, KC_END,
+        OS_CMD,  OS_ALT,  OS_CTRL, KC_ESC,  KIT_PRE,  KC_ENT,  KC_LEFT, KC_DOWN, KC_RGHT, KC_END,
         G(KC_Z), G(KC_X), G(KC_V), G(KC_C), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, LA_NUM,
                           _______, _______, _______, _______, _______, _______
     ),
@@ -95,25 +103,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_WM] = LAYOUT_split_3x5_3(
         A(KC_1),  A(KC_2),  A(KC_3),  A(KC_4),  A(KC_5),  A(KC_6),  A(KC_7),  A(KC_8),  A(KC_9),  A(KC_0),
-        OS_ALT,   KIT_PRE,  AER_KITTY, AER_RESIZE, _______,  KIT_FOCUS_L, KIT_FOCUS_D, KIT_FOCUS_U, KIT_FOCUS_R, KIT_QUIT,
-        _______,  _______,  AER_RELOAD, AER_FLOAT, _______,  KIT_SPLIT_H, KIT_SPLIT_V, KIT_EQ,  _______, _______,
+        OS_ALT,   KIT_PRE,  AER_KITTY, AER_RESIZE, KIT_QUIT, _______, AER_FOCUS_L, AER_FOCUS_D, AER_FOCUS_U, AER_FOCUS_R,
+        KIT_SPLIT_H, KIT_SPLIT_V, KIT_EQ,  AER_RELOAD, AER_FLOAT, AER_MOVE_L, AER_MOVE_D, AER_MOVE_U, AER_MOVE_R, _______,
                           _______, _______, _______, _______, _______, _______
     )
 };
 // clang-format on
-
-static void send_kitty_prefix(uint16_t keycode)
-{
-    tap_code16(C(KC_W));
-    tap_code16(keycode);
-}
 
 bool is_oneshot_cancel_key(uint16_t keycode)
 {
     switch (keycode) {
     case LA_SYM:
     case LA_NAV:
-    case LA_WM:
         return true;
     default:
         return false;
@@ -161,40 +162,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
     update_oneshot(&os_alt_state, KC_LALT, OS_ALT, keycode, record);
     update_oneshot(&os_cmd_state, KC_LCMD, OS_CMD, keycode, record);
 
-    switch (keycode) {
-    case KIT_FOCUS_L:
-        if (record->event.pressed) {
-            send_kitty_prefix(KC_H);
-        }
-        return false;
-    case KIT_FOCUS_D:
-        if (record->event.pressed) {
-            send_kitty_prefix(KC_J);
-        }
-        return false;
-    case KIT_FOCUS_U:
-        if (record->event.pressed) {
-            send_kitty_prefix(KC_K);
-        }
-        return false;
-    case KIT_FOCUS_R:
-        if (record->event.pressed) {
-            send_kitty_prefix(KC_L);
-        }
-        return false;
-    case KIT_QUIT:
-        if (record->event.pressed) {
-            send_kitty_prefix(KC_Q);
-        }
-        return false;
-    case KIT_EQ:
-        if (record->event.pressed) {
-            send_kitty_prefix(KC_EQL);
-        }
-        return false;
-    default:
-        return true;
-    }
+    return true;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state)
