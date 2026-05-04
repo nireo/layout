@@ -25,6 +25,7 @@
 
 #define MAC_APPWIN C(KC_DOWN)
 #define MAC_LOCK C(G(KC_Q))
+#define MAC_QUIT G(KC_Q)
 #define MAC_SWITCH G(KC_TAB)
 #define MAC_SWITCH_BACK S(G(KC_TAB))
 #define MAC_TEXT_INC G(KC_EQL)
@@ -65,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NAV] = LAYOUT_split_3x5_2(
         TAB_L,  SW_TAB,   SW_APP,  MAC_SWITCH_BACK, VIM_U,   VIM_D,   KC_HOME, KC_UP,   KC_BSPC, KC_DEL,
         OS_CMD,  OS_ALT,  OS_CTRL, KC_ESC,  KC_ENT,  KC_ENT,  KC_LEFT, KC_DOWN, KC_RGHT, KC_END,
-        G(KC_Z), G(KC_X), G(KC_V), G(KC_C), KC_TAB,  KC_TAB,  KC_PGUP, KC_PGDN, KC_QUOT, LA_NUM,
+        G(KC_Z), G(KC_X), G(KC_V), G(KC_C), KC_TAB,  MAC_QUIT, KC_PGUP, KC_PGDN, KC_QUOT, LA_NUM,
                                    _______, _______, _______, _______
     ),
 
